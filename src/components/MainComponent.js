@@ -9,6 +9,7 @@ class Main extends Component {
         super(props);
         this.state = {
             campsites: CAMPSITES,
+            // sets default selectedCampsite to null so that only the cards show up without the descriptions/ comments
             selectedCampsite: null
         };
     }
