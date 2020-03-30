@@ -2,11 +2,14 @@ import React, { Component }  from 'react';
 import { Nav, Navbar, NavbarBrand, NavbarToggler, Collapse, NavItem, Jumbotron } from 'reactstrap';
 import { NavLink } from 'react-router-dom';
 
+
+// Creates Header class that extends Component(React) so that we can easily call it on the main page
 class Header extends Component {
+
 
     constructor(props) {
         super(props);
-
+        // below is for when the page is small aka mobile it will hide the nav bar and create a hamburger button
         this.toggleNav = this.toggleNav.bind(this);
         this.state = {
           isNavOpen: false

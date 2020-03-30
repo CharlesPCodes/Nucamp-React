@@ -8,6 +8,7 @@ class App extends Component {
         return (
             <BrowserRouter>
             <div className="App">
+                {/* calls Main function from MainComponent.js */}
                 <Main />
             </div>
             </BrowserRouter>
