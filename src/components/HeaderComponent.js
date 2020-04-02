@@ -13,13 +13,13 @@ class Header extends Component {
         super(props);
         // below is for when the page is small aka mobile it will hide the nav bar and create a hamburger button
         this.toggleNav = this.toggleNav.bind(this);
+        this.toggleModal = this.toggleModal.bind(this);
+        this.handleLogin = this.handleLogin.bind(this);
         this.state = {
             isNavOpen: false,
             isModalOpen: false
         };
-        this.toggleNav = this.toggleNav.bind(this);
-        this.toggleModal = this.toggleModal.bind(this);
-        this.handleLogin = this.handleLogin.bind(this);
+        
     }
 
     handleLogin(event) {
