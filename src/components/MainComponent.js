@@ -3,7 +3,6 @@ import Directory from './DirectoryComponent';
 import { CAMPSITES } from '../shared/campsites';
 import { COMMENTS } from '../shared/comments';
 import { PARTNERS } from '../shared/partners';
-import {SOCIAL} from '../shared/social';
 import { PROMOTIONS } from '../shared/promotions';
 import Header from './HeaderComponent';
 import Footer from './FooterComponent';
