@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { actions } from 'react-redux-form';
 import Directory from './DirectoryComponent';
 import { CAMPSITES } from '../shared/campsites';
 import { COMMENTS } from '../shared/comments';
@@ -16,7 +17,8 @@ import { addComment, fetchCampsites } from '../redux/ActionTypes';
 
 const mapDispatchToProps = {
     addComment: (campsiteId, rating, author, text) => (addComment(campsiteId, rating, author, text)),
-    fetchCampsites: () => (fetchCampsites())
+    fetchCampsites: () => (fetchCampsites()),
+    resetFeedbackForm: () => (actions.reset('feedbackForm'))
 };
 
 const mapStateToProps = state => {
@@ -79,7 +81,7 @@ class Main extends Component {
                          {/* Route path of /directory to render FROM DirectoryComponent.js function campsites */}
                         <Route path='/directory/:campsiteId' component={CampsiteWithId} />
                         {/* Route path of /contactus FROM component Contact */}
-                        <Route exact path='/contactus' component={Contact} />
+                        <Route exact path='/contactus' render={() => <Contact resetFeedbackForm={this.props.resetFeedbackForm} /> } />
                         {/* Route path of /directory/:campsiteId FROM the component of CampsiteWithId */}
                         <Route exact path='/aboutus' render={() => <About partners={this.props.partners} /> } />
                         {/* Redirect to always go to home page when site open */}
