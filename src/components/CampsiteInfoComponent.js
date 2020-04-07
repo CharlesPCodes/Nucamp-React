@@ -5,6 +5,7 @@ import {
 import { Link } from 'react-router-dom';
 import { LocalForm, Control, Errors } from 'react-redux-form';
 import { Loading } from './LoadingComponent';
+import { baseUrl } from '../shared/baseUrl';
 
 // Render the Campsites cards with img/descriptions
 function RenderCampsite({ campsite }) {
@@ -13,7 +14,7 @@ function RenderCampsite({ campsite }) {
             <Card>
                 {/* add cards with image from capsites.js */}
                 {/* All info has been recored in campsites.js */}
-                <CardImg top src={campsite.image} alt={campsite.name} />
+                <CardImg top src={baseUrl + campsite.image} alt={campsite.name} />
                 <CardBody>
                     <CardTitle>{campsite.name}</CardTitle>
                     <CardText>{campsite.description}</CardText>

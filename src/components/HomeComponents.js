@@ -1,6 +1,7 @@
 import React from 'react';
 import { Card, CardImg, CardText, CardBody, CardTitle } from 'reactstrap';
 import { Loading } from './LoadingComponent';
+import { baseUrl } from '../shared/baseUrl';
 
 // Function for home page /home
 // create a function Home and pass (props) parm
@@ -19,9 +20,11 @@ function Home(props) {
                 </div>
                 {/* create card based on the RenderCard function that passes props.promotion */}
                 <div className="col-md m-1">
-                <RenderCard item={props.promotion}
-                 isLoading={props.campsitesLoading}
-                 errMess={props.campsitesErrMess}/>
+                <RenderCard
+                        item={props.promotion}
+                        isLoading={props.promotionLoading}
+                        errMess={props.promotionErrMess}
+                    />
                 </div>
                 {/* create card based on the RenderCard fucntion that passes props.partner */}
                 <div className="col-md m-1">
@@ -53,7 +56,7 @@ function RenderCard({ item, isLoading, errMess }) {
     }
     return (
         <Card>
-            <CardImg src={item.image} alt={item.name} />
+             <CardImg src={baseUrl + item.image} alt={item.name} />
             <CardBody>
                 <CardTitle>{item.name}</CardTitle>
                 <CardText>{item.description}</CardText>
