@@ -24,7 +24,7 @@ function RenderCampsite({ campsite }) {
     );
 }
 // Render Comments Section
-function RenderComments({comments, addComment, campsiteId}) {
+function RenderComments({comments, postComment, campsiteId}) {
     if (comments) {
         return (
             // here
@@ -35,7 +35,7 @@ function RenderComments({comments, addComment, campsiteId}) {
                     const formattedDate = new Intl.DateTimeFormat('en-US', { year: 'numeric', month: 'short', day: '2-digit' }).format(new Date(Date.parse(comment.date)));
                     return (<p key={comment.id}>{comment.text}<br /> --{comment.author} -- {formattedDate}</p>);
                 })}
-                <CommentForm campsiteId={campsiteId} addComment={addComment} />
+                <CommentForm campsiteId={campsiteId} postComment={postComment} />
             </div>
         );
     } // otherwise return empty div
@@ -80,7 +80,7 @@ function CampsiteInfo(props) {
                     <RenderCampsite campsite={props.campsite} />
                     <RenderComments 
                         comments={props.comments}
-                        addComment={props.addComment}
+                        postComment={props.postComment}
                         campsiteId={props.campsite.id}
                     />
                 </div>
@@ -117,7 +117,7 @@ class CommentForm extends React.Component {
     }
     handleSubmit(values) {
         this.toggleModal();
-        this.props.addComment(this.props.campsiteId, values.rating, values.author, values.text);
+        this.props.postComment(this.props.campsiteId, values.rating, values.author, values.text);
     }
 
     render() {
