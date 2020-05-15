@@ -1,43 +1,79 @@
 import React from 'react';
 import { Breadcrumb, BreadcrumbItem, Card, CardBody, CardHeader, Media } from 'reactstrap';
 import { Link } from 'react-router-dom';
+import { Loading } from './LoadingComponent';
+import { baseUrl } from '../shared/baseUrl';
+import { Fade, Stagger } from 'react-animation-components'
 
-// render function to insert partners information
-function RenderPartner({partner}){
+function RenderPartner({ partner }) {
     // if there is a partner then:
-    if (partner){
-        return(
+    if (partner) {
+        return (
             // create a media React Fragment--(component to return multiple elements)
-         <React.Fragment>
-             {/* Media object with image to left  */}
-             <Media object src={partner.image} alt={partner.name} width="150"/>
-             {/* Media body including partner name and description */}
-             <Media body className="ml-5 mb-4">
-                 <Media heading>{partner.name}</Media>
-                 {partner.description}
-             </Media>
-         </React.Fragment>
+            <React.Fragment>
+                {/* Media object with image to left  */}
+                <Media object src={baseUrl + partner.image} alt={partner.name} width="150" />
+                {/* Media body including partner name and description */}
+                <Media body className="ml-5 mb-4">
+                    <Media heading>{partner.name}</Media>
+                    {partner.description}
+                </Media>
+            </React.Fragment>
         );
     }
     // if there are no partners then return empty div
-    return(
-       <div></div>
+    return (
+        <div></div>
+    );
+}
+
+function PartnerList(props) {
+    // map partners to partner from MainComponent.js
+    const partners = props.partners.partners.map(partner => {
+        return (
+            // return a media with li tag which passes RenderPartner to load
+            <Fade in key={partner.id}>
+                <Media tag='li'>
+                    <RenderPartner partner={partner} />
+                </Media>
+            </Fade>
+        )
+    })
+
+    if (props.isLoading) {
+        return (
+            <div className="container">
+                <div className="row">
+                    <Loading />
+                </div>
+            </div>
         );
- }
+    }
+    if (props.errMess) {
+        return (
+            <div className="container">
+                <div className="row">
+                    <div className="col">
+                        <h4>{props.errMess}</h4>
+                    </div>
+                </div>
+            </div>
+        );
+    }
+    return (
+        <div className="col mt-4">
+            <Media list>
+                <Stagger in>
+                    {partners}
+                </Stagger>
+            </Media>
+        </div>
+    );
+
+}
+
 
 function About(props) {
-
-     const partners = props.partners.map(partner => {
-        return (
-            // create media tag as a list with the key of partner id so that they are each seperated
-            <Media tag="li" key={partner.id}>
-                {/* call RenderPartner to render */}
-                <RenderPartner partner={partner} />
-            </Media>
-        );
-    });
-
-    
 
     return (
         <div className="container">
@@ -95,13 +131,13 @@ function About(props) {
                     <h3>Community Partners</h3>
                 </div>
                 <div className="col mt-4">
-                    <Media list>
-                        {partners}
-                    </Media>
+                    {/* pass PartnerList to load & pass partners to props.partners so that we can call the correct information */}
+                    <PartnerList partners={props.partners} />
                 </div>
             </div>
         </div>
     );
+
 }
 
 export default About;

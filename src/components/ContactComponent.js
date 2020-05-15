@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import {Button, Label, Col, Row } from 'reactstrap';
-// import { Control, LocalForm } from 'react-redux-form';
 import { Control, Form, Errors} from 'react-redux-form';
 
 // create function of Contact pass it props parm
@@ -8,7 +7,7 @@ class Contact extends Component {
 
     constructor(props) {
         super(props);
-
+        // pass default states for the following
         this.state = {
             firstName: '',
             lastName: '',
@@ -25,10 +24,12 @@ class Contact extends Component {
             }
         };
 
+        // bind handleInputChange and handleSubmit to this current state/constuctor
         this.handleInputChange = this.handleInputChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
+    // make sure we vaildate the following input fields
     validate(firstName, lastName, phoneNum, email) {
 
         const errors = {
@@ -37,7 +38,7 @@ class Contact extends Component {
             phoneNum: '',
             email: ''
         };
-
+        // if firstname causes error then do the following
         if (this.state.touched.firstName) {
             if (firstName.length < 2) {
                 errors.firstName = 'First name must be at least 2 characters.';
@@ -45,7 +46,7 @@ class Contact extends Component {
                 errors.firstName = 'First name must be 15 or less characters.';
             }
         }
-
+        // if lastname causes error then do the following
         if (this.state.touched.lastName) {
             if (lastName.length < 2) {
                 errors.lastName = 'Last name must be at least 2 characters.';
@@ -53,16 +54,16 @@ class Contact extends Component {
                 errors.lastName = 'Last name must be 15 or less characters.';
             }
         }
-
+        // if phoneNum does not have only numbers
         const reg = /^\d+$/;
         if (this.state.touched.phoneNum && !reg.test(phoneNum)) {
             errors.phoneNum = 'The phone number should contain only numbers.';
         }
-
+        // email must include @
         if (this.state.touched.email && !email.includes('@')) {
             errors.email = 'Email should contain a @';
         }
-
+        // else return errors
         return errors;
     }
 
@@ -81,11 +82,10 @@ class Contact extends Component {
             [name]: value
         });
     }
-
+    // on submit of form then pass this.props.postFeedback(values) which passes the values to the db.json in the json server
     handleSubmit(values) {
-        console.log('Current State is: ' + JSON.stringify(values));
-        alert('Current State is: ' + JSON.stringify(values));
-        this.props.resetFeedbackForm();
+        this.props.postFeedback(values);
+        // this.props.resetFeedbackForm();
     }
     render() {
         const required = val => val && val.length;
@@ -93,7 +93,6 @@ class Contact extends Component {
         const minLength = len => val => val && (val.length >= len);
         const isNumber = val => !isNaN(+val);
         const validEmail = val => /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(val);
-        // const errors = this.validate(this.state.firstName, this.state.lastName, this.state.phoneNum, this.state.email);
         return (
             <div className="row row-content">
                 <div className="col-12">
@@ -103,7 +102,7 @@ class Contact extends Component {
                 <div className="col-md-10">
                 <Form model="feedbackForm" onSubmit={values => this.handleSubmit(values)}>       
                         <Row className="form-group">
-                            <Label htmlFor="lastName" md={2}>Last Name</Label>
+                            <Label htmlFor="firstName" md={2}>First Name</Label>
                             <Col md={10}>
                                 <Control.text model=".firstName" id="firstName" name="firstName"
                                     placeholder="First Name"

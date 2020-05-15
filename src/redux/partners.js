@@ -1,8 +1,22 @@
-import { PARTNERS } from '../shared/partners';
+import * as ActionTypes from './ActionTypes';
 
-export const Partners = (state = PARTNERS, action) => {
-    switch (action.type) {
+// pass the following defaults into Partners for the reducer
+export const Partners =(state={
+    isLoading: true,
+    errMess: null,
+    partners: []
+} ,action) =>{
+    switch(action.type){
+        // if adding partners then return the following
+        case ActionTypes.ADD_PARTNERS:
+            return{...state, isLoading:false, errMess:null, partners: action.payload}
+            // if loading then return the following
+        case ActionTypes.PARTNERS_LOADING:
+            return{...state, isLoading: true, errMess: null, partners: [] }
+            // if failed the return the following
+        case ActionTypes.PARTNERS_FAILED:
+                return { ...state, isLoading: false, errMess: action.payload };
         default:
-          return state;
-      }
-};
+            return state;
+    }
+}

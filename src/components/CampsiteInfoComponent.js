@@ -1,12 +1,13 @@
 import React from 'react';
 import {
-    Card, CardImg, CardText, CardBody, CardTitle, Breadcrumb, BreadcrumbItem, Button, Modal, ModalHeader, ModalBody, Label, Row, Col
+    Card, CardImg, CardText, CardBody, Breadcrumb, BreadcrumbItem, Button, Modal, ModalHeader, ModalBody, Label, Row, Col
 } from 'reactstrap';
 import { Link } from 'react-router-dom';
 import { LocalForm, Control, Errors } from 'react-redux-form';
 import { Loading } from './LoadingComponent';
 import { baseUrl } from '../shared/baseUrl';
-import { FadeTransform, Fade, Stagger } from 'react-animation-components';
+import { FadeTransform, Fade, Stagger, Transform } from 'react-animation-components';
+
 
 // Render the Campsites cards with img/descriptions
 function RenderCampsite({ campsite }) {
@@ -15,9 +16,10 @@ function RenderCampsite({ campsite }) {
             <FadeTransform
                 in
                 transformProps={{
-                    exitTransform: 'scale(0.5) translateY(-50%)'
+                    exitTransform: 'scale(1.5) translateY(-50%)'
                 }}>
                 <Card>
+                    {/* grabbing image based off of db.json from json server NOT shared/campsites.js */}
                     <CardImg top src={baseUrl + campsite.image} alt={campsite.name} />
                     <CardBody>
                         <CardText>{campsite.description}</CardText>
@@ -28,25 +30,27 @@ function RenderCampsite({ campsite }) {
     );
 }
 // Render Comments Section
-function RenderComments({comments, postComment, campsiteId}) {
+function RenderComments({ comments, postComment, campsiteId }) {
     if (comments) {
         return (
-            // here
             <div className="col-md-5 m-1">
-               <h4>Comments</h4>
+                <Transform enterTransform="translateX(50px)" in>
+                    <h4>Comments</h4>
+                </Transform>
                 <Stagger in>
                     {comments.map(comment => {
                         return (
                             <Fade in key={comment.id}>
                                 <div>
                                     <p>{comment.text}<br />
-                                        -- {comment.author}, {new Intl.DateTimeFormat('en-US', { year: 'numeric', month: 'short', day: '2-digit'}).format(new Date(Date.parse(comment.date)))}
+                                        -- {comment.author}, {new Intl.DateTimeFormat('en-US', { year: 'numeric', month: 'short', day: '2-digit' }).format(new Date(Date.parse(comment.date)))}
                                     </p>
                                 </div>
                             </Fade>
                         );
                     })}
                 </Stagger>
+                {/* BUTTON TO SUBMIT COMMENT */}
                 <CommentForm campsiteId={campsiteId} postComment={postComment} />
             </div>
         );
@@ -55,6 +59,7 @@ function RenderComments({comments, postComment, campsiteId}) {
 }
 // render the following 
 function CampsiteInfo(props) {
+    // if loading then
     if (props.isLoading) {
         return (
             <div className="container">
@@ -64,6 +69,7 @@ function CampsiteInfo(props) {
             </div>
         );
     }
+    // if error then
     if (props.errMess) {
         return (
             <div className="container">
@@ -75,6 +81,7 @@ function CampsiteInfo(props) {
             </div>
         );
     }
+    // if there are campsites then
     if (props.campsite) {
         return (
             <div className="container">
@@ -84,13 +91,22 @@ function CampsiteInfo(props) {
                             <BreadcrumbItem><Link to="/directory">Directory</Link></BreadcrumbItem>
                             <BreadcrumbItem active>{props.campsite.name}</BreadcrumbItem>
                         </Breadcrumb>
-                        <h2>{props.campsite.name}</h2>
+                        <FadeTransform
+                            in
+                            transformProps={{
+                                exitTransform: 'scale(2.5) translateY(-50%)'
+                            }}>
+                            <h2>{props.campsite.name}</h2>
+                        </FadeTransform>
                         <hr />
                     </div>
                 </div>
                 <div className="row">
+                    {/* show RenderCampsite & RenderComments */}
+                    {/* Pass campsite from props.campsite */}
                     <RenderCampsite campsite={props.campsite} />
-                    <RenderComments 
+                    <RenderComments
+                    // pass comments,postComment, and campsite.id
                         comments={props.comments}
                         postComment={props.postComment}
                         campsiteId={props.campsite.id}
@@ -120,20 +136,19 @@ class CommentForm extends React.Component {
     }
 
     // method that checks the state of the modal and changes to the opposite
-    // if isModal = false then isModal = true
-    // if isModal = true then isModal = false
+    // if isModal = false then isModal = true &&  if isModal = true then isModal = false
     toggleModal() {
         this.setState({
             isModalOpen: !this.state.isModalOpen
         })
     }
+    // on submit of comment modal then pass the following
     handleSubmit(values) {
         this.toggleModal();
+        // getting values from the form submit
         this.props.postComment(this.props.campsiteId, values.rating, values.author, values.text);
     }
-
     render() {
-        // ??
         const required = val => val && val.length;
         const maxLength = len => val => !val || (val.length <= len);
         const minLength = len => val => val && (val.length >= len);
@@ -152,7 +167,7 @@ class CommentForm extends React.Component {
                                     <Control.select model=".rating" id="rating" name="rating"
                                         className="form-control"
                                         placeholder="1"
-                                        >
+                                    >
                                         <option value="one">1</option>
                                         <option value="two">2</option>
                                         <option value="three">3</option>
